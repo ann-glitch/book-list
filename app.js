@@ -40,7 +40,7 @@ UI.prototype.showAlert = function (message, className) {
 };
 
 //clear books prototype
-UI.prototype.clearBooks = function () {
+UI.prototype.clearFields = function () {
   document.getElementById("title").value = " ";
   document.getElementById("author").value = " ";
   document.getElementById("isbn").value = " ";
@@ -75,7 +75,7 @@ document.getElementById("book-form").addEventListener("submit", function (e) {
     ui.addBookToList(book);
 
     //clear books
-    ui.clearBooks();
+    ui.clearFields();
   }
 
   e.preventDefault();
