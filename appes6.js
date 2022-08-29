@@ -87,7 +87,17 @@ class Store {
     localStorage.setItem("books", JSON.stringify(books));
   }
 
-  static removeBooks() {}
+  //remove book from local storage
+  static removeBook(isbn) {
+    const books = Store.getBooks();
+
+    books.forEach((book, index) => {
+      if (book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    });
+    localStorage.setItem("books", JSON.stringify(books));
+  }
 }
 //display books from local storage
 document.addEventListener("DOMContentLoaded", Store.displayBooks);
@@ -128,7 +138,12 @@ document.getElementById("book-list").addEventListener("click", function (e) {
   //instantiate UI
   const ui = new UI();
 
+  //delete book
   ui.deleteBook(e.target);
 
+  //remove book from LS
+  Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
+  //show message
   ui.showAlert("Book Removed!", "success");
 });
