@@ -1,3 +1,4 @@
+// Book class
 class Book {
   constructor(title, author, isbn) {
     this.title = title;
@@ -6,6 +7,7 @@ class Book {
   }
 }
 
+// UI class
 class UI {
   //add book
   addBookToList(book) {
@@ -53,11 +55,48 @@ class UI {
   }
 }
 
+// local storage class
+class Store {
+  //get books from local storage
+  static getBooks() {
+    let books;
+    if (localStorage.getItem("books") === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem("books"));
+    }
+    return books;
+  }
+
+  //display books from local storage
+  static displayBooks() {
+    const books = Store.getBooks();
+
+    books.forEach((book) => {
+      const ui = new UI();
+
+      ui.addBookToList(book);
+    });
+  }
+
+  //add book to local storage
+  static addBook(book) {
+    const books = Store.getBooks();
+
+    books.push(book);
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+
+  static removeBooks() {}
+}
+//display books from local storage
+document.addEventListener("DOMContentLoaded", Store.displayBooks);
+
 //eventlistener to add book
 document.getElementById("book-form").addEventListener("submit", function (e) {
-  const title = document.querySelector("#title").value;
-  const author = document.querySelector("#author").value;
-  const isbn = document.querySelector("#isbn").value;
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const isbn = document.getElementById("isbn").value;
 
   //instantiate Book
   const book = new Book(title, author, isbn);
@@ -73,6 +112,9 @@ document.getElementById("book-form").addEventListener("submit", function (e) {
 
     //add books
     ui.addBookToList(book);
+
+    //add book to LS
+    Store.addBook(book);
 
     //clear books
     ui.clearFields();
